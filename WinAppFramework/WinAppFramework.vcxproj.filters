@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{4756d591-d7ba-486f-a69d-f70206880ac9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\DataType">
+      <UniqueIdentifier>{05f1679b-f039-4092-8a02-d52da855785e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameObject">
+      <UniqueIdentifier>{664c64a1-c968-415f-8077-cffee5a24154}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{ff7eb369-13ea-4f01-aaea-f613d73913b5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Framework\GameObject\GameObject.h">
+      <Filter>Framework\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\DataType\Collision.h">
+      <Filter>Framework\DataType</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\DataType\Mathf.h">
+      <Filter>Framework\DataType</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\DataType\MyList.h">
+      <Filter>Framework\DataType</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\DataType\MyQue.hpp">
+      <Filter>Framework\DataType</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\DataType\myStack.h">
+      <Filter>Framework\DataType</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\DataType\Vector2.h">
+      <Filter>Framework\DataType</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\DataType\wString.h">
+      <Filter>Framework\DataType</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\AllScenes.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\MainScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\GameManager.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\InputSystem.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\RenderSystem.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\ScenesBase.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\SoundSystem.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\TimeSystem.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\WinApp.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Framework\GameObject\GameObject_Sprite.cpp">
+      <Filter>Framework\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\GameObject\GameObject_Circle.cpp">
+      <Filter>Framework\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\GameObject\GameObject_Font.cpp">
+      <Filter>Framework\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\GameObject\GameObject_Line.cpp">
+      <Filter>Framework\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\GameObject\GameObject_Polygon.cpp">
+      <Filter>Framework\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\GameObject\GameObject_Square.cpp">
+      <Filter>Framework\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\GameObject\GameObject_text.cpp">
+      <Filter>Framework\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\DataType\Collision.cpp">
+      <Filter>Framework\DataType</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\DataType\Mathf.cpp">
+      <Filter>Framework\DataType</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\DataType\Vector2.cpp">
+      <Filter>Framework\DataType</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\DataType\wString.cpp">
+      <Filter>Framework\DataType</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\MainScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\GameManager.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\InputSystem.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\RenderSystem.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\ScenesBase.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\SoundSystem.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\TimeSystem.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\WinApp.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
