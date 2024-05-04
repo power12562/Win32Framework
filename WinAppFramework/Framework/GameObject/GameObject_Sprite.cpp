@@ -155,11 +155,6 @@ void GameObject_Sprite::Rendering()
 	}	
 }
 
-void GameObject_Sprite::SetPos(Vector2 pos)
-{
-	transform.position = pos;	
-}
-
 void GameObject_Sprite::SetAngle(float angle)
 {
 	this->angle = angle;
@@ -216,29 +211,6 @@ void GameObject_Sprite::ReleasebitMap()
 		DeleteObject(Hbitmap); //원래 있던 비트맵은 삭제
 	}
 	this->Hbitmap = NULL;	
-}
-
-void GameObject_Sprite::SetScale(Vector2 scale)
-{
-	this->transform.scale.X = scale.X;
-	this->transform.scale.Y = scale.X;
-
-	this->SetEnableFlag(FlagTable::ReScale, true);
-
-	this->PosToRotationPos();
-}
-void GameObject_Sprite::SetScale(float scaleXY)
-{
-	this->transform.scale.X = scaleXY;
-	this->transform.scale.Y = scaleXY;
-
-	this->SetEnableFlag(FlagTable::ReScale, true);
-
-	this->PosToRotationPos();
-}
-Vector2 GameObject_Sprite::GetScale()
-{
-	return this->transform.scale;
 }
 
 void GameObject_Sprite::SetReSize(int ReSizeWidth, int ReSizeHeight)

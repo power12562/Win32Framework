@@ -163,9 +163,6 @@ public:
 
 	void Rendering();
 
-	void SetPos(Vector2 pos);
-	Vector2 GetPos() const { return transform.position; };
-
 	void SetAngle(float angle);
 	float GetAngle() const { return angle; }
 
@@ -176,10 +173,6 @@ public:
 
 	HBITMAP GetHbitmap();
 	void ReleasebitMap();
-
-	void SetScale(Vector2 scale);
-	void SetScale(float scaleXY);
-	Vector2 GetScale();
 
 	void SetReSize(int ReSizeWidth, int ReSizeHeight);
 	COORD GetReSize();
