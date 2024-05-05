@@ -42,9 +42,6 @@
     <ClInclude Include="Scenes\AllScenes.h">
       <Filter>Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Scenes\MainScene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\GameManager.h">
       <Filter>Framework</Filter>
     </ClInclude>
@@ -64,6 +61,12 @@
       <Filter>Framework</Filter>
     </ClInclude>
     <ClInclude Include="Framework\WinApp.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\MainScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\AnimationSystem.h">
       <Filter>Framework</Filter>
     </ClInclude>
   </ItemGroup>
@@ -101,9 +104,6 @@
     <ClCompile Include="Framework\DataType\wString.cpp">
       <Filter>Framework\DataType</Filter>
     </ClCompile>
-    <ClCompile Include="Scenes\MainScene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Framework\GameManager.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
@@ -123,6 +123,12 @@
       <Filter>Framework</Filter>
     </ClCompile>
     <ClCompile Include="Framework\WinApp.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\MainScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\AnimationSystem.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
   </ItemGroup>

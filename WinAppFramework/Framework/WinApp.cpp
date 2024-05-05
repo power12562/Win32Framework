@@ -52,7 +52,7 @@ void WinApp::Initialize(HINSTANCE hInstance)
 
 	const int SCREEN_WIDTH = this->CLIENT_WIDTH;
 	const int SCREEN_HEIGHT = this->CLIENT_HEIGHT;
-	const TCHAR* appName = TEXT("Wario Ware!");
+	const TCHAR* appName = TEXT("Win32Framework");
 
 	//Step 1: Registering the Window Class
 	WNDCLASS wndClass;

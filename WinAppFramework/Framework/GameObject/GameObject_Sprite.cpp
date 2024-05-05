@@ -47,8 +47,6 @@ Vector2& GameObject_Sprite::Position::operator=(const Vector2 other)
 	this->X = other.X;
 	this->Y = other.Y;
 
-	this->gameObject->PosToRotationPos();
-
 	return *this;
 }
 Vector2& GameObject_Sprite::Position::operator+=(const Vector2& other)
@@ -56,16 +54,12 @@ Vector2& GameObject_Sprite::Position::operator+=(const Vector2& other)
 	this->X += other.X;
 	this->Y += other.Y;
 
-	this->gameObject->PosToRotationPos();
-
 	return *this;
 }
 Vector2& GameObject_Sprite::Position::operator-=(const Vector2& other)
 {
 	this->X -= other.X;
 	this->Y -= other.Y;
-
-	this->gameObject->PosToRotationPos();
 
 	return *this;
 }
@@ -78,8 +72,6 @@ Vector2& GameObject_Sprite::Scale::operator=(const Vector2 other)
 
 	gameObject->SetEnableFlag(FlagTable::ReScale, true);
 
-	gameObject->PosToRotationPos();
-
 	return *this;
 }
 Vector2& GameObject_Sprite::Scale::operator=(const float scala)
@@ -88,8 +80,6 @@ Vector2& GameObject_Sprite::Scale::operator=(const float scala)
 	this->Y = scala;
 
 	gameObject->SetEnableFlag(FlagTable::ReScale, true);
-
-	gameObject->PosToRotationPos();
 
 	return *this;
 }
@@ -101,8 +91,6 @@ Vector2& GameObject_Sprite::Scale::operator+=(const Vector2& other)
 
 	gameObject->SetEnableFlag(FlagTable::ReScale, true);
 
-	gameObject->PosToRotationPos();
-
 	return *this;
 }
 
@@ -112,8 +100,6 @@ Vector2& GameObject_Sprite::Scale::operator-=(const Vector2& other)
 	this->Y -= other.X;
 
 	gameObject->SetEnableFlag(FlagTable::ReScale, true);
-
-	gameObject->PosToRotationPos();
 
 	return *this;
 }
@@ -158,9 +144,6 @@ void GameObject_Sprite::Rendering()
 void GameObject_Sprite::SetAngle(float angle)
 {
 	this->angle = angle;
-
-	//비트맵 꼭짓점 회전
-	PosToRotationPos();
 }
 
 float GameObject_Sprite::GetRadianAngle()
@@ -195,8 +178,6 @@ void GameObject_Sprite::Loadbmp(const char* path)
 	this->Hbitmap = (HBITMAP)LoadImageA(
 		hInstance, path, IMAGE_BITMAP, 
 		0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION | LR_SHARED);
-
-	PosToRotationPos();
 }
 
 HBITMAP GameObject_Sprite::GetHbitmap()
@@ -218,8 +199,6 @@ void GameObject_Sprite::SetReSize(int ReSizeWidth, int ReSizeHeight)
 	this->reSizeWidth = ReSizeWidth;
 	this->reSizeHeight = ReSizeHeight;
 	this->SetEnableFlag(FlagTable::ReSize, true);
-
-	this->PosToRotationPos();
 }
 COORD GameObject_Sprite::GetReSize()
 {
@@ -292,22 +271,51 @@ void GameObject_Sprite::PosToRotationPos()
 	BITMAP bitmap_load = { 0 }; //불러온 비트맵 정보 담을 구조체
 	GetObject(this->GetHbitmap(), sizeof(bitmap_load), &bitmap_load); //불러온 비트맵의 정보를 담는다
 
+	//현재 클립 상태에 따른 사이즈 조정
+	Animation::Clip* clip = animation.GetCurrClip();
+	CenterPos = Vector2{0,0};
+	if (clip != nullptr)
+	{
+		const Animation::Frame currFrame = animation.GetCurrentFrame();
+
+		bitmap_load.bmWidth = currFrame.Size.cx;
+		bitmap_load.bmHeight = currFrame.Size.cy;
+
+		CenterPos.X = (float)currFrame.CenterX * transform.scale.X / 2.f;
+		CenterPos.Y = (float)currFrame.CenterY * transform.scale.Y / 2.f;
+
+		if (Flip_X) CenterPos.X *= -1;
+		if (Flip_Y) CenterPos.Y *= -1;
+	}
+
 	const int PointSize = 4;
 	const float radianAngle = this->GetRadianAngle();
 	const float cosRadAngle = (float)cos(radianAngle);
 	const float sinRadAngle = (float)sin(radianAngle);
-
+	
 	Vector2 DefalutVectexPoint[PointSize] = { 0, };
 	DefalutVectexPoint[0] = { -((float)bitmap_load.bmWidth / 2.0f), (float)bitmap_load.bmHeight / 2.0f };
 	DefalutVectexPoint[1] = { (float)bitmap_load.bmWidth / 2.0f,  (float)bitmap_load.bmHeight / 2.0f };
 	DefalutVectexPoint[2] = { -((float)bitmap_load.bmWidth / 2.0f),  -((float)bitmap_load.bmHeight / 2.0f) };
 	DefalutVectexPoint[3] = { ((float)bitmap_load.bmWidth / 2.0f),  -((float)bitmap_load.bmHeight / 2.0f) };
+	
+	//이미지 반전 여부 확인
+	short flip_X = (Flip_X == true) ? -1 : 1;
+	short flip_Y = (Flip_Y == true) ? -1 : 1;
 
 	//회전
-	Vector2 DirectionVec[PointSize] = { 0, };
+	if (CenterPos != Vector2{ 0, 0 })
+	{
+		CenterPos = { (CenterPos.X * cosRadAngle + CenterPos.Y * sinRadAngle), (CenterPos.Y * cosRadAngle - CenterPos.X * sinRadAngle) };
+	}
+ 	Vector2 DirectionVec[PointSize] = { 0, };
 	for (int i = 0; i < PointSize; i++)
 	{
 		DirectionVec[i] = DefalutVectexPoint[i].Normalized();
+
+		//이미지 반전 적용
+		DirectionVec[i].X *= flip_X; 
+		DirectionVec[i].Y *= flip_Y; 
 	}
 	float Distance[PointSize] = { 0, };
 	for (int i = 0; i < PointSize; i++)
@@ -318,8 +326,8 @@ void GameObject_Sprite::PosToRotationPos()
 	for (int i = 0; i < PointSize; i++)
 	{
 		RotatedDirvec[i] = {
-			(DirectionVec[i].X * cosRadAngle) - (DirectionVec[i].Y * sinRadAngle),
-			(DirectionVec[i].Y * cosRadAngle) + (DirectionVec[i].X * sinRadAngle)
+			(DirectionVec[i].X * cosRadAngle - DirectionVec[i].Y * sinRadAngle),
+			(DirectionVec[i].Y * cosRadAngle + DirectionVec[i].X * sinRadAngle)
 		};
 	}
 	for (int i = 0; i < PointSize; i++)
@@ -354,10 +362,10 @@ void GameObject_Sprite::PosToRotationPos()
 	}
 
 	//좌표 이동
-	Vector2 Pos = { this->transform.position.X, this->transform.position.Y };
+	Vector2 Pos = { this->transform.position.X - CenterPos.X, this->transform.position.Y + CenterPos.Y };
 	for (int i = 0; i < PointSize; i++)
 	{
-		BitMapVertexPoint[i] = { BitMapVertexPoint[i].X + Pos.X,  BitMapVertexPoint[i].Y + Pos.Y };
+		BitMapVertexPoint[i] = { BitMapVertexPoint[i].X + Pos.X,  BitMapVertexPoint[i].Y + Pos.Y};
 	}
 
 }
@@ -403,36 +411,86 @@ POINT GameObject_Sprite::GetBoundingBoxSize(POINT* bitmapPoints)
 
 void GameObject_Sprite::DrawBitmap()
 {	
-	HDC HDC_temp = CreateCompatibleDC(backMemDC);
+	PosToRotationPos();
+
+	HDC HDC_bitmap = CreateCompatibleDC(backMemDC); //비트맵 불러올 HDC
+	SelectObject(HDC_bitmap, this->GetHbitmap()); //해당 비트맵을 그린다
 	BITMAP bitmap_load = { 0 }; //불러온 비트맵 정보 담을 구조체
 	GetObject(this->GetHbitmap(), sizeof(bitmap_load), &bitmap_load); //불러온 비트맵의 정보를 담는다
 
-	//형변환
+	HDC HDC_temp = CreateCompatibleDC(backMemDC); //임시 HDC
+	HBITMAP HBITMAP_temp = CreateCompatibleBitmap(backMemDC, WinApp::GetWinApp().GetClientWidth(), WinApp::GetWinApp().GetClientHeight());	//임시 Hbitmap
+	SelectObject(HDC_temp, HBITMAP_temp);
+
+	Animation::Clip* clip = animation.GetCurrClip();
+	if (clip == nullptr) //애니메이션 클립 활성화 됬는지 확인
+	{
+		BitBlt(HDC_temp, 0, 0, bitmap_load.bmWidth, bitmap_load.bmHeight, HDC_bitmap, 0, 0, SRCCOPY); //원본 그대로 복사.
+	}
+	else
+	{
+		Animation::Frame currentFrame = animation.GetCurrentFrame();
+
+		//너비, 높이 변경
+		bitmap_load.bmWidth = currentFrame.Size.cx;
+		bitmap_load.bmHeight = currentFrame.Size.cy;
+
+		//애니메이션 클립 정보에 따라 복사.
+		BitBlt(HDC_temp, 0, 0, bitmap_load.bmWidth, bitmap_load.bmHeight,
+			HDC_bitmap, currentFrame.Source.left, currentFrame.Source.top, SRCCOPY);
+	}
+
+	//꼭짓점 좌표 형변환
 	const int pointSize = 4;
 	POINT vertexPoint[4] = { 0, };
 	for (int i = 0; i < 4; i++)
 	{
-		vertexPoint[i].x = (LONG)BitMapVertexPoint[i].X;
-		vertexPoint[i].y = (LONG)BitMapVertexPoint[i].Y;	
+		vertexPoint[i].x = LONG(BitMapVertexPoint[i].X);
+		vertexPoint[i].y = LONG(BitMapVertexPoint[i].Y);
 
 		PositionToScreenPos(vertexPoint[i]); //화면 좌표료 변환
 	}
-
-	//해당 비트맵을 그린다
-	SelectObject(HDC_temp, this->GetHbitmap());
 
 	//회전해서 출력
 	PlgBlt(backMemDC, vertexPoint, HDC_temp, 0, 0, bitmap_load.bmWidth, bitmap_load.bmHeight, NULL, 0, 0);
 	
 	//사용한 핸들 삭제
 	DeleteDC(HDC_temp);
+	DeleteObject(HBITMAP_temp);
+
+	DeleteDC(HDC_bitmap);
 }
 
 void GameObject_Sprite::DrawBitmap_TransparentBlt()
 {
-	HDC HDC_temp = CreateCompatibleDC(backMemDC); //비트맵 그릴 HDC
+	PosToRotationPos();
+
+	HDC HDC_bitmap = CreateCompatibleDC(backMemDC); //비트맵 불러올 HDC
+	SelectObject(HDC_bitmap, this->GetHbitmap()); //해당 비트맵을 그린다
 	BITMAP bitmap_load = { 0 }; //불러온 비트맵 정보 담을 구조체
 	GetObject(this->GetHbitmap(), sizeof(bitmap_load), &bitmap_load); //불러온 비트맵의 정보를 담는다
+
+	HDC HDC_temp = CreateCompatibleDC(backMemDC); //임시 HDC
+	HBITMAP HBITMAP_temp = CreateCompatibleBitmap(backMemDC, WinApp::GetWinApp().GetClientWidth(), WinApp::GetWinApp().GetClientHeight());	//임시 Hbitmap
+	SelectObject(HDC_temp, HBITMAP_temp);
+
+	Animation::Clip* clip = animation.GetCurrClip();
+	if (clip == nullptr) //애니메이션 클립 활성화 됬는지 확인
+	{
+		BitBlt(HDC_temp, 0, 0, bitmap_load.bmWidth, bitmap_load.bmHeight, HDC_bitmap, 0, 0, SRCCOPY); //원본 그대로 복사.
+	}
+	else
+	{
+		const Animation::Frame currentFrame = animation.GetCurrentFrame();
+
+		//너비, 높이 변경
+		bitmap_load.bmWidth = currentFrame.Size.cx;
+		bitmap_load.bmHeight = currentFrame.Size.cy;
+
+		//애니메이션 클립 정보에 따라 복사.
+		BitBlt(HDC_temp, 0, 0, bitmap_load.bmWidth, bitmap_load.bmHeight,
+			HDC_bitmap, currentFrame.Source.left, currentFrame.Source.top, SRCCOPY);
+	}
 
 	//형변환
 	const int pointSize = 4;
@@ -464,7 +522,7 @@ void GameObject_Sprite::DrawBitmap_TransparentBlt()
 
 	//오브젝트 위치에 따른 출력 위치
 	POINT boundingBoxSize = GetBoundingBoxSize(vertexPoint); //바운딩 박스 크기 계산
-	COORD outPos = { (short)this->transform.position.X, (short)this->transform.position.Y };
+	COORD outPos = { short(this->transform.position.X - CenterPos.X), short(this->transform.position.Y + CenterPos.Y) };
 	PositionToScreenPos(outPos);
 	outPos.X -= short(boundingBoxSize.x / 2.0);
 	outPos.Y -= short(boundingBoxSize.y / 2.0);
@@ -477,15 +535,44 @@ void GameObject_Sprite::DrawBitmap_TransparentBlt()
 	
 	//사용한 핸들, Object 삭제
 	DeleteDC(HDC_temp);
+	DeleteObject(HBITMAP_temp);
+
 	DeleteDC(HDC_rotation);
 	DeleteObject(HBITMAP_rotation);
+
+	DeleteDC(HDC_bitmap);	
 }
 
 void GameObject_Sprite::DrawBitmap_AlphaBlend()
 {
-	HDC HDC_temp = CreateCompatibleDC(backMemDC); //비트맵 그릴 HDC
+	PosToRotationPos();
+
+	HDC HDC_bitmap = CreateCompatibleDC(backMemDC); //비트맵 불러올 HDC
+	SelectObject(HDC_bitmap, this->GetHbitmap()); //해당 비트맵을 그린다
 	BITMAP bitmap_load = { 0 }; //불러온 비트맵 정보 담을 구조체
 	GetObject(this->GetHbitmap(), sizeof(bitmap_load), &bitmap_load); //불러온 비트맵의 정보를 담는다
+
+	HDC HDC_temp = CreateCompatibleDC(backMemDC); //임시 HDC
+	HBITMAP HBITMAP_temp = CreateCompatibleBitmap(backMemDC, WinApp::GetWinApp().GetClientWidth(), WinApp::GetWinApp().GetClientHeight());	//임시 Hbitmap
+	SelectObject(HDC_temp, HBITMAP_temp);
+
+	Animation::Clip* clip = animation.GetCurrClip();
+	if (clip == nullptr) //애니메이션 클립 활성화 됬는지 확인
+	{
+		BitBlt(HDC_temp, 0, 0, bitmap_load.bmWidth, bitmap_load.bmHeight, HDC_bitmap, 0, 0, SRCCOPY); //원본 그대로 복사.
+	}
+	else
+	{
+		const Animation::Frame currentFrame = animation.GetCurrentFrame();
+
+		//너비, 높이 변경
+		bitmap_load.bmWidth = currentFrame.Size.cx;
+		bitmap_load.bmHeight = currentFrame.Size.cy;
+
+		//애니메이션 클립 정보에 따라 복사.
+		BitBlt(HDC_temp, 0, 0, bitmap_load.bmWidth, bitmap_load.bmHeight,
+			HDC_bitmap, currentFrame.Source.left, currentFrame.Source.top, SRCCOPY);
+	}
 
 	//형변환
 	const int pointSize = 4;
@@ -517,7 +604,7 @@ void GameObject_Sprite::DrawBitmap_AlphaBlend()
 
 	//오브젝트 위치에 따른 출력 위치
 	POINT boundingBoxSize = GetBoundingBoxSize(vertexPoint); //바운딩 박스 크기 계산
-	COORD outPos = { (short)this->transform.position.X, (short)this->transform.position.Y };
+	COORD outPos = { short(this->transform.position.X - CenterPos.X), short(this->transform.position.Y + CenterPos.Y) };
 	PositionToScreenPos(outPos);
 	outPos.X -= short(boundingBoxSize.x / 2.0);
 	outPos.Y -= short(boundingBoxSize.y / 2.0);
@@ -535,15 +622,44 @@ void GameObject_Sprite::DrawBitmap_AlphaBlend()
 
 	//사용한 핸들, Object 삭제
 	DeleteDC(HDC_temp);
+	DeleteObject(HBITMAP_temp);
+
 	DeleteDC(HDC_rotation);
 	DeleteObject(HBITMAP_rotation);
+
+	DeleteDC(HDC_bitmap);
 }
 
 void GameObject_Sprite::DrawBitmap_AlphaAndTransparent()
 {
-	HDC HDC_temp = CreateCompatibleDC(backMemDC); //비트맵 그릴 HDC
+	PosToRotationPos();
+
+	HDC HDC_bitmap = CreateCompatibleDC(backMemDC); //비트맵 불러올 HDC
+	SelectObject(HDC_bitmap, this->GetHbitmap()); //해당 비트맵을 그린다
 	BITMAP bitmap_load = { 0 }; //불러온 비트맵 정보 담을 구조체
 	GetObject(this->GetHbitmap(), sizeof(bitmap_load), &bitmap_load); //불러온 비트맵의 정보를 담는다
+
+	HDC HDC_temp = CreateCompatibleDC(backMemDC); //임시 HDC
+	HBITMAP HBITMAP_temp = CreateCompatibleBitmap(backMemDC, WinApp::GetWinApp().GetClientWidth(), WinApp::GetWinApp().GetClientHeight());	//임시 Hbitmap
+	SelectObject(HDC_temp, HBITMAP_temp);
+
+	Animation::Clip* clip = animation.GetCurrClip();
+	if (clip == nullptr) //애니메이션 클립 활성화 됬는지 확인
+	{
+		BitBlt(HDC_temp, 0, 0, bitmap_load.bmWidth, bitmap_load.bmHeight, HDC_bitmap, 0, 0, SRCCOPY); //원본 그대로 복사.
+	}
+	else
+	{
+		const Animation::Frame currentFrame = animation.GetCurrentFrame();
+
+		//너비, 높이 변경
+		bitmap_load.bmWidth = currentFrame.Size.cx;
+		bitmap_load.bmHeight = currentFrame.Size.cy;
+
+		//애니메이션 클립 정보에 따라 복사.
+		BitBlt(HDC_temp, 0, 0, bitmap_load.bmWidth, bitmap_load.bmHeight,
+			HDC_bitmap, currentFrame.Source.left, currentFrame.Source.top, SRCCOPY);
+	}
 
 	//형변환
 	const int pointSize = 4;
@@ -575,7 +691,7 @@ void GameObject_Sprite::DrawBitmap_AlphaAndTransparent()
 
 	//오브젝트 위치에 따른 출력 위치
 	POINT boundingBoxSize = GetBoundingBoxSize(vertexPoint); //바운딩 박스 크기 계산
-	COORD outPos = { (short)this->transform.position.X, (short)this->transform.position.Y };
+	COORD outPos = { short(this->transform.position.X - CenterPos.X), short(this->transform.position.Y + CenterPos.Y) };
 	PositionToScreenPos(outPos);
 	outPos.X -= short(boundingBoxSize.x / 2.0);
 	outPos.Y -= short(boundingBoxSize.y / 2.0);
@@ -604,10 +720,15 @@ void GameObject_Sprite::DrawBitmap_AlphaAndTransparent()
 
 	//사용한 핸들, Object 삭제
 	DeleteDC(HDC_temp);
+	DeleteObject(HBITMAP_temp);
+
 	DeleteDC(HDC_rotation);
 	DeleteObject(HBITMAP_rotation);
+
 	DeleteDC(HDC_Alpha);
 	DeleteObject(HBITMAP_Alpha);
+
+	DeleteDC(HDC_bitmap);
 }
 
 bool GameObject_Sprite::isCollisionAABB(const BoundingBox& B) const

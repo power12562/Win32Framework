@@ -8,10 +8,10 @@ public:
 	float X;
 	float Y;
 
-	static Vector2 Right() { return { 1,0 }; }
-	static Vector2 Left() { return { -1,0 }; }
-	static Vector2 Up() { return { 0,1 }; }
-	static Vector2 Down() { return { 0,-1 }; }
+	static const Vector2 Right;
+	static const Vector2 Left;
+	static const Vector2 Up;
+	static const Vector2 Down;
 
 	Vector2(float x = 0, float y = 0);
 	Vector2(double x, double y);
@@ -31,6 +31,8 @@ public:
 	virtual Vector2& operator-=(const Vector2& other);
 	virtual Vector2 operator+(const Vector2& other);
 	virtual Vector2 operator-(const Vector2& other);
+	bool operator!=(const Vector2& other);
+	bool operator==(const Vector2& other);
 };
 
 struct BoundingBox

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Framework\AnimationSystem.h" />
     <ClInclude Include="Framework\DataType\Collision.h" />
     <ClInclude Include="Framework\DataType\Mathf.h" />
     <ClInclude Include="Framework\DataType\MyList.h" />
@@ -38,6 +39,7 @@
     <ClInclude Include="Scenes\MainScene.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Framework\AnimationSystem.cpp" />
     <ClCompile Include="Framework\DataType\Collision.cpp" />
     <ClCompile Include="Framework\DataType\Mathf.cpp" />
     <ClCompile Include="Framework\DataType\Vector2.cpp" />

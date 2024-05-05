@@ -1,6 +1,12 @@
 #include <math.h>
 #include "Vector2.h"
 
+const Vector2 Vector2::Right{ 1,0 };
+const Vector2 Vector2::Left{ -1,0 };
+const Vector2 Vector2::Up{ 0,1 };
+const Vector2 Vector2::Down{ 0,-1 };
+
+
 Vector2::Vector2(float x, float y)
 {
 	this->X = x;
@@ -22,13 +28,13 @@ Vector2::Vector2(int x, int y)
 Vector2::Vector2(const Vector2& other)
 {
 	this->X = other.X;
-	this->Y = other.Y;	
+	this->Y = other.Y;
 }
 
 Vector2 Vector2::Lerp(Vector2 startPos, Vector2 EndPos, float t)
 {
 	Vector2 Lerp = { (1.f - t) * startPos.X + t * EndPos.X, (1.f - t) * startPos.Y + t * EndPos.Y };
-	
+
 	return Lerp;
 }
 
@@ -45,7 +51,7 @@ Vector2 Vector2::Normalized()
 
 Vector2 Vector2::operator*(const float scala) const
 {
-	Vector2 value = {this->X, this->Y};
+	Vector2 value = { this->X, this->Y };
 	value.X *= scala;
 	value.Y *= scala;
 
@@ -68,7 +74,7 @@ Vector2& Vector2::operator-=(const Vector2& other)
 	return *this;
 }
 
-Vector2 Vector2::operator+(const Vector2 & other)
+Vector2 Vector2::operator+(const Vector2& other)
 {
 	Vector2 sum = { 0, 0 };
 	sum.X = this->X + other.X;
@@ -84,4 +90,14 @@ Vector2 Vector2::operator-(const Vector2& other)
 	sub.Y = this->Y - other.Y;
 
 	return sub;
+}
+
+bool Vector2::operator!=(const Vector2& other)
+{
+	return (this->X != other.X || this->Y != other.Y);
+}
+
+bool Vector2::operator==(const Vector2& other)
+{
+	return (this->X == other.X && this->Y == other.Y);
 }

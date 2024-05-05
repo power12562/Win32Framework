@@ -18,9 +18,12 @@ private:
 	void Update() override;
 	void Rendering() override;
 
-	//GameObj
-	GameObject_Square obj_rect;
-	GameObject_Sprite obj_Sprite;
+	//Field
+	float KenMoveSpeed = 250.f;
+	GameObject_Sprite obj_Ken;
+	Clip Ken_Idle = nullptr;
+	Clip Ken_Walk = nullptr;
+	Clip Ken_Attack = nullptr;
 
 };
 

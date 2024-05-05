@@ -10,8 +10,8 @@ namespace My
 		{
 			T data;
 
-			Node* Prev;
-			Node* Next;
+			Node* Prev = nullptr;
+			Node* Next = nullptr;
 		};
 
 		class Iterator
@@ -61,9 +61,6 @@ namespace My
 		int Size();  //자료 개수
 		void Clear(); //리스트 전체 삭제
 
-		bool Insert(int index, T data); //데이터 삽입
-
-		bool Erase(int index);
 		bool Erase(Node* pNode);//데이터 지우기
 
 		Node* PushBack(T data) //제일 뒤쪽에 추가
@@ -121,8 +118,6 @@ namespace My
 			}
 			return nullptr;
 		}
-
-		T& GetData(int index); //값 가져오기
 	private:
 		int size;
 		Node* pHead; //시작
@@ -162,7 +157,9 @@ namespace My
 		Node* pCurrent = pHead->Next;
 		for (int i = 1; i < this->size; i++)
 		{
+#pragma warning( disable : 6011 ) 
 			pCurrent->Prev->Next = nullptr;
+#pragma warning( default : 6011 ) 
 			delete pCurrent->Prev;
 			pCurrent->Prev = nullptr;
 
@@ -174,75 +171,6 @@ namespace My
 		pTail = nullptr;
 		size = 0;
 	}
-	template<typename T> bool List<T>::Insert(int index, T data)
-	{
-		Node* pCurr = pHead;
-		if (size > 0 && 0 <= index && index < size)
-		{
-			for (int i = 0; i < index; i++)
-			{
-				pCurr = pCurr->Next;
-			}
-			Node* pPrev = pCurr->Prev;
-			Node* pNext = pCurr;
-			pCurr = new Node;
-			if (pCurr == nullptr) false;
-
-			pCurr->data = data;
-			pCurr->Prev = pPrev;
-			pCurr->Next = pNext;
-
-			pNext->Prev = pCurr;
-			pPrev->Next = pCurr;
-
-			if (index == 0) pHead = pCurr;
-			if (index == (size - 1)) pTail = pCurr;
-
-			size++;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	template<typename T> bool List<T>::Erase(int index)
-	{
-		Node* pCurr = pHead;
-		if (size > 0 && 0 <= index && index < size)
-		{
-			for (int i = 0; i < index; i++)
-			{
-				pCurr = pCurr->Next;
-			}
-			Node* pPrev = pCurr->Prev;
-			Node* pNext = pCurr->Next;
-			pCurr->Prev = nullptr;
-			pCurr->Next = nullptr;
-			delete pCurr;
-
-			if (pPrev != nullptr)
-				pPrev->Next = pNext;
-			else if (pNext != nullptr)
-				pNext->Prev = nullptr;
-
-			if (pNext != nullptr)
-				pNext->Prev = pPrev;
-			else if (pPrev != nullptr)
-				pPrev->Next = nullptr;
-
-			if (index == 0) pHead = pNext;
-			if (index == (size - 1)) pTail = pPrev;
-
-			size--;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
 	template<typename T> bool List<T>::Erase(Node* pNode)
 	{
 		Node* pCurr = pNode;
@@ -269,23 +197,6 @@ namespace My
 
 		size--;
 		return true;
-	}
-
-	template<typename T> T& List<T>::GetData(int index)
-	{
-		if (0 <= index && index < size)
-		{
-			Node* pCurr = nullptr;
-
-			pCurr = pHead;
-			for (int i = 0; i < index; i++)
-			{
-				pCurr = pCurr->Next;
-			}
-
-			return pCurr->data;
-		}
-		throw std::out_of_range("out of index");
 	}
 }
 

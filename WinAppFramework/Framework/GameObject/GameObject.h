@@ -1,5 +1,6 @@
 #pragma once
 #include "..\RenderSystem.h"
+#include "..\AnimationSystem.h"
 #include "..\DataType\Vector2.h"
 #include "..\DataType\wString.h"
 
@@ -139,9 +140,8 @@ class GameObject_Sprite : public Render
 		GameObject_Sprite* gameObject = nullptr;
 	};
 
-	class Transform
+	struct Transform
 	{
-	public:
 		Position position;
 		Scale scale;
 	};
@@ -159,7 +159,12 @@ public:
 
 	GameObject_Sprite();
 	~GameObject_Sprite();
-	GameObject_Sprite& operator=(const GameObject_Sprite&); //บนป็
+	GameObject_Sprite& operator=(const GameObject_Sprite&); 
+
+	Animation animation;
+
+	bool Flip_X = false;
+	bool Flip_Y = false;
 
 	void Rendering();
 
@@ -206,6 +211,7 @@ private:
 	unsigned short bitflag;
 
 	Vector2 BitMapVertexPoint[4];
+	Vector2 CenterPos = {0,0};
 
 	void PosToRotationPos();
 	POINT GetBoundingBoxLeftTop(POINT* bitmapPoints);

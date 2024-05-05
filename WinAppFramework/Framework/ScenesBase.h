@@ -27,6 +27,8 @@ protected:
 	virtual void Update() = 0;
 	virtual void Rendering() = 0;
 
+	typedef My::List<Animation::Clip>::Node* Clip;
+
 private:
 	float FixedUpdate_elapsedTime;
 };
