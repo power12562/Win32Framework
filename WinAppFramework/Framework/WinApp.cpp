@@ -1,5 +1,6 @@
 #include "WinApp.h"
 #include "RenderSystem.h"
+#include "SceneManager.h"
 
 WinApp WinApp::winApp;
 
@@ -87,7 +88,7 @@ void WinApp::Initialize(HINSTANCE hInstance)
 	UpdateWindow(m_hWnd);
 
 	Render::InitRenderSystem();
-	GameManager::Gm = &gameManager;	
+	sceneManager.StartGame();
 }
 
 WinApp::WinApp()
@@ -103,7 +104,7 @@ WinApp::~WinApp()
 void WinApp::Run()
 {
 	// Step 4: Game Loop Here
-	gameManager.StartGame();
+	
 }
 
 void WinApp::Finalize()
@@ -123,7 +124,7 @@ LRESULT CALLBACK WinApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	break;
 
 	case WM_DESTROY:
-		GameManager::Gm->EndGame();
+		sceneManager.EndGame();
 		PostQuitMessage(0);
 		break;
 

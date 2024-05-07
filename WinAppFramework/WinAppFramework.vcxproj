@@ -27,7 +27,7 @@
     <ClInclude Include="Framework\DataType\myStack.h" />
     <ClInclude Include="Framework\DataType\Vector2.h" />
     <ClInclude Include="Framework\DataType\wString.h" />
-    <ClInclude Include="Framework\GameManager.h" />
+    <ClInclude Include="Framework\SceneManager.h" />
     <ClInclude Include="Framework\GameObject\GameObject.h" />
     <ClInclude Include="Framework\InputSystem.h" />
     <ClInclude Include="Framework\RenderSystem.h" />
@@ -44,7 +44,7 @@
     <ClCompile Include="Framework\DataType\Mathf.cpp" />
     <ClCompile Include="Framework\DataType\Vector2.cpp" />
     <ClCompile Include="Framework\DataType\wString.cpp" />
-    <ClCompile Include="Framework\GameManager.cpp" />
+    <ClCompile Include="Framework\SceneManager.cpp" />
     <ClCompile Include="Framework\GameObject\GameObject_Sprite.cpp" />
     <ClCompile Include="Framework\GameObject\GameObject_Circle.cpp" />
     <ClCompile Include="Framework\GameObject\GameObject_Font.cpp" />

@@ -4,13 +4,11 @@ enum class SceneTable
 	MainScene,
 };
 
-class GameManager
+class SceneManager
 {
 public:
-	static GameManager* Gm;
-
-	GameManager();
-	~GameManager();
+	SceneManager();
+	~SceneManager();
 
 	void StartGame(); //게임 시작
 	void EndGame(); //게임 종료	
@@ -25,4 +23,8 @@ private:
 	template<typename T> void StartScene();
 	void EndScene();
 };
+
+static SceneManager sceneManager; //싱클톤
+
+
 

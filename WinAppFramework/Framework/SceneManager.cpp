@@ -1,9 +1,7 @@
-#include "GameManager.h"
+#include "Scenemanager.h"
 #include "..\Scenes\AllScenes.h"
 
-GameManager* GameManager::Gm; //외부 접근용
-
-GameManager::GameManager()
+SceneManager::SceneManager()
 {
 	SelectScene = SceneTable::MainScene;
 
@@ -12,13 +10,13 @@ GameManager::GameManager()
 	isGameEnd = false;
 }
 
-GameManager::~GameManager()
+SceneManager::~SceneManager()
 {
 	
 }
 
 //public:
-void GameManager::StartGame()
+void SceneManager::StartGame()
 {
 	//씬 선택 루프
 	while (!isGameEnd)
@@ -32,20 +30,20 @@ void GameManager::StartGame()
 	}
 }
 
-void GameManager::EndGame()
+void SceneManager::EndGame()
 {
 	EndScene();
 	isGameEnd = true;	
 }
 
-void GameManager::LoadScene(SceneTable Scene)
+void SceneManager::LoadScene(SceneTable Scene)
 {
 	EndScene();
 	SelectScene = Scene;
 }
 
 //private:
-template<typename T> void GameManager::StartScene()
+template<typename T> void SceneManager::StartScene()
 {
 	T* LoadScene = new T;
 
@@ -56,7 +54,7 @@ template<typename T> void GameManager::StartScene()
 	delete LoadScene;
 }
 
-void GameManager::EndScene()
+void SceneManager::EndScene()
 {
 	switch (SelectScene)
 	{

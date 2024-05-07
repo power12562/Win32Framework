@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <tchar.h>
-#include "GameManager.h"
 
 class WinApp
 {
@@ -50,6 +49,4 @@ private:
 	const int CLIENT_HEIGHT = 1080;
 
 	void ClientRectToWindowRect(RECT& ClientRect); //클라이언트 크기를 실제 윈도우 크기로 바꿔주는 메서드
-
-	GameManager gameManager;
 };

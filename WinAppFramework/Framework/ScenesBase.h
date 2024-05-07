@@ -3,7 +3,7 @@
 #include ".\DataType\Vector2.h"
 #include "InputSystem.h"
 #include "TimeSystem.h"
-#include "GameManager.h"
+#include "SceneManager.h"
 #include "SoundSystem.h"
 
 class SceneBase

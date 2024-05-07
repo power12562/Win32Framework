@@ -65,6 +65,7 @@ void MainScene::Update()
 	{
 		isLeftRight = false;
 	}
+
 	if (input.IsKey(KeyCode::UpArrow) && isAniEnd)
 	{
 		obj_Ken.animation.SetClip(Ken_Walk);
@@ -81,10 +82,12 @@ void MainScene::Update()
 	{
 		isUpDown = false;
 	}
+
 	if (input.IsKeyDown(KeyCode::Space))
 	{
 		obj_Ken.animation.SetClip(Ken_Attack);
 	}
+
 	if (!isLeftRight && !isUpDown)
 		obj_Ken.animation.SetClip(Ken_Idle);
 
