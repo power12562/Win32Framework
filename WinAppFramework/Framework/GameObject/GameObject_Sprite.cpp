@@ -9,6 +9,7 @@ GameObject_Sprite::GameObject_Sprite()
 {
 	transform.position.InitGameObject(this);
 	transform.scale.InitGameObject(this);
+	animation.InitGameObject(this);
 
 	this->Hbitmap = NULL;
 	
@@ -47,6 +48,8 @@ Vector2& GameObject_Sprite::Position::operator=(const Vector2 other)
 	this->X = other.X;
 	this->Y = other.Y;
 
+	gameObject->UpdateBitMapVertexPoint();
+
 	return *this;
 }
 Vector2& GameObject_Sprite::Position::operator+=(const Vector2& other)
@@ -54,12 +57,16 @@ Vector2& GameObject_Sprite::Position::operator+=(const Vector2& other)
 	this->X += other.X;
 	this->Y += other.Y;
 
+	gameObject->UpdateBitMapVertexPoint();
+
 	return *this;
 }
 Vector2& GameObject_Sprite::Position::operator-=(const Vector2& other)
 {
 	this->X -= other.X;
 	this->Y -= other.Y;
+
+	gameObject->UpdateBitMapVertexPoint();
 
 	return *this;
 }
@@ -72,6 +79,8 @@ Vector2& GameObject_Sprite::Scale::operator=(const Vector2 other)
 
 	gameObject->SetEnableFlag(FlagTable::ReScale, true);
 
+	gameObject->UpdateBitMapVertexPoint();
+
 	return *this;
 }
 Vector2& GameObject_Sprite::Scale::operator=(const float scala)
@@ -80,6 +89,8 @@ Vector2& GameObject_Sprite::Scale::operator=(const float scala)
 	this->Y = scala;
 
 	gameObject->SetEnableFlag(FlagTable::ReScale, true);
+
+	gameObject->UpdateBitMapVertexPoint();
 
 	return *this;
 }
@@ -91,6 +102,8 @@ Vector2& GameObject_Sprite::Scale::operator+=(const Vector2& other)
 
 	gameObject->SetEnableFlag(FlagTable::ReScale, true);
 
+	gameObject->UpdateBitMapVertexPoint();
+
 	return *this;
 }
 
@@ -100,6 +113,8 @@ Vector2& GameObject_Sprite::Scale::operator-=(const Vector2& other)
 	this->Y -= other.X;
 
 	gameObject->SetEnableFlag(FlagTable::ReScale, true);
+
+	gameObject->UpdateBitMapVertexPoint();
 
 	return *this;
 }
@@ -144,6 +159,8 @@ void GameObject_Sprite::Rendering()
 void GameObject_Sprite::SetAngle(float angle)
 {
 	this->angle = angle;
+
+	UpdateBitMapVertexPoint();
 }
 
 float GameObject_Sprite::GetRadianAngle()
@@ -178,6 +195,8 @@ void GameObject_Sprite::Loadbmp(const char* path)
 	this->Hbitmap = (HBITMAP)LoadImageA(
 		hInstance, path, IMAGE_BITMAP, 
 		0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION | LR_SHARED);
+
+	UpdateBitMapVertexPoint();
 }
 
 HBITMAP GameObject_Sprite::GetHbitmap()
@@ -198,7 +217,10 @@ void GameObject_Sprite::SetReSize(int ReSizeWidth, int ReSizeHeight)
 {
 	this->reSizeWidth = ReSizeWidth;
 	this->reSizeHeight = ReSizeHeight;
+
 	this->SetEnableFlag(FlagTable::ReSize, true);
+
+	UpdateBitMapVertexPoint();
 }
 COORD GameObject_Sprite::GetReSize()
 {
@@ -240,8 +262,10 @@ bool GameObject_Sprite::GetEnableFlag(FlagTable flag)
 	return isEnable;
 }
 
-BoundingBox GameObject_Sprite::GetBounds() const
+BoundingBox GameObject_Sprite::GetBounds()
 {
+	UpdateBitMapVertexPoint();
+
 	const int pointSize = 4;
 
 	//포인트 위치에 따른 bounding box 크기 계산
@@ -264,7 +288,7 @@ BoundingBox GameObject_Sprite::GetBounds() const
 }
 
 //private :
-void GameObject_Sprite::PosToRotationPos()
+void GameObject_Sprite::UpdateBitMapVertexPoint() //Angle 값에 따른 꼭짓점 위치 업데이트
 {
 	if (this->GetHbitmap() == NULL) return;
 
@@ -411,8 +435,6 @@ POINT GameObject_Sprite::GetBoundingBoxSize(POINT* bitmapPoints)
 
 void GameObject_Sprite::DrawBitmap()
 {	
-	PosToRotationPos();
-
 	HDC HDC_bitmap = CreateCompatibleDC(backMemDC); //비트맵 불러올 HDC
 	SelectObject(HDC_bitmap, this->GetHbitmap()); //해당 비트맵을 그린다
 	BITMAP bitmap_load = { 0 }; //불러온 비트맵 정보 담을 구조체
@@ -463,8 +485,6 @@ void GameObject_Sprite::DrawBitmap()
 
 void GameObject_Sprite::DrawBitmap_TransparentBlt()
 {
-	PosToRotationPos();
-
 	HDC HDC_bitmap = CreateCompatibleDC(backMemDC); //비트맵 불러올 HDC
 	SelectObject(HDC_bitmap, this->GetHbitmap()); //해당 비트맵을 그린다
 	BITMAP bitmap_load = { 0 }; //불러온 비트맵 정보 담을 구조체
@@ -545,8 +565,6 @@ void GameObject_Sprite::DrawBitmap_TransparentBlt()
 
 void GameObject_Sprite::DrawBitmap_AlphaBlend()
 {
-	PosToRotationPos();
-
 	HDC HDC_bitmap = CreateCompatibleDC(backMemDC); //비트맵 불러올 HDC
 	SelectObject(HDC_bitmap, this->GetHbitmap()); //해당 비트맵을 그린다
 	BITMAP bitmap_load = { 0 }; //불러온 비트맵 정보 담을 구조체
@@ -632,8 +650,6 @@ void GameObject_Sprite::DrawBitmap_AlphaBlend()
 
 void GameObject_Sprite::DrawBitmap_AlphaAndTransparent()
 {
-	PosToRotationPos();
-
 	HDC HDC_bitmap = CreateCompatibleDC(backMemDC); //비트맵 불러올 HDC
 	SelectObject(HDC_bitmap, this->GetHbitmap()); //해당 비트맵을 그린다
 	BITMAP bitmap_load = { 0 }; //불러온 비트맵 정보 담을 구조체
@@ -731,12 +747,12 @@ void GameObject_Sprite::DrawBitmap_AlphaAndTransparent()
 	DeleteDC(HDC_bitmap);
 }
 
-bool GameObject_Sprite::isCollisionAABB(const BoundingBox& B) const
+bool GameObject_Sprite::isCollisionAABB(const BoundingBox& B)
 {
 	return Collision::CheckCollisionAABB(this->GetBounds(), B);
 }
 
-bool GameObject_Sprite::isCollisionAABB(const Vector2& B) const
+bool GameObject_Sprite::isCollisionAABB(const Vector2& B)
 {
 	return Collision::CheckCollisionAABB(this->GetBounds(), B);
 }

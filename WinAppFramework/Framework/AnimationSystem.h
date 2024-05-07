@@ -27,13 +27,12 @@ public:
 	My::List<Clip>::Node* AddClip(const WCHAR* fileName, bool IsLoop = true); //애니메이션 클립 추가
 	void SetClip(My::List<Clip>::Node* clip); //재생할 클립 선택
 	void DelClip(My::List<Clip>::Node* clip); //클립 삭제
-	void UpdateFrmae(float DeltaTime);
-
+	virtual void UpdateFrmae(float DeltaTime);
 	Clip* GetCurrClip() { return CurrentClip; }
 	const Frame& GetCurrentFrame() const { return CurrentClip->Frames[CurrentFrame]; }
 	bool IsClipEnd() { return isCurrentClipEnd; }
 
-private:
+protected:
 	My::List<Clip> ClipList; //클립 리스트
 	Clip* CurrentClip = nullptr; //현재 선택된 클립
 

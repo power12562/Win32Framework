@@ -139,7 +139,41 @@ class GameObject_Sprite : public Render
 	private:
 		GameObject_Sprite* gameObject = nullptr;
 	};
+	class Animation_Sprite : public Animation
+	{
+	public:
+		void InitGameObject(GameObject_Sprite* _gameObject)
+		{
+			if (gameObject == nullptr) gameObject = _gameObject;
+			else throw; //포인터 변경 불가능
+		}
+		virtual void UpdateFrmae(float DeltaTime) override
+		{
+			if (CurrentClip == nullptr) return;
 
+			elapsedTime += DeltaTime;
+			while (elapsedTime >= CurrentClip->frameIntervalTime) //시간 도달하면 다음 프레임으로 변경
+			{
+				CurrentFrame++;
+				elapsedTime -= CurrentClip->frameIntervalTime;		
+
+				if(CurrentFrame < CurrentClip->FrameCount)
+					gameObject->UpdateBitMapVertexPoint();
+			}
+			if (CurrentFrame == CurrentClip->FrameCount) //애니메이션 종료시
+			{
+				if (CurrentClip->IsLoop == true) //루프 확인
+					CurrentFrame = 0; //루프
+				else
+				{
+					CurrentFrame--;
+					isCurrentClipEnd = true;
+				}
+			}
+		}
+	private:
+		GameObject_Sprite* gameObject = nullptr;
+	}; 
 	struct Transform
 	{
 		Position position;
@@ -161,7 +195,7 @@ public:
 	~GameObject_Sprite();
 	GameObject_Sprite& operator=(const GameObject_Sprite&); 
 
-	Animation animation;
+	Animation_Sprite animation;
 
 	bool Flip_X = false;
 	bool Flip_Y = false;
@@ -191,10 +225,10 @@ public:
 	void SetEnableFlag(FlagTable flag, bool isEnable);
 	bool GetEnableFlag(FlagTable flag);
 
-	BoundingBox GetBounds() const;
+	BoundingBox GetBounds();
 
-	bool isCollisionAABB(const BoundingBox& B) const;
-	bool isCollisionAABB(const Vector2& B) const;
+	bool isCollisionAABB(const BoundingBox& B);
+	bool isCollisionAABB(const Vector2& B);
 
 private:
 	HBITMAP Hbitmap;
@@ -213,7 +247,7 @@ private:
 	Vector2 BitMapVertexPoint[4];
 	Vector2 CenterPos = {0,0};
 
-	void PosToRotationPos();
+	void UpdateBitMapVertexPoint();
 	POINT GetBoundingBoxLeftTop(POINT* bitmapPoints);
 	POINT GetBoundingBoxSize(POINT* bitmapPoints);
 

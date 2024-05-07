@@ -42,13 +42,6 @@ void MainScene::FixedUpdate()
 //매 프레임 호출
 void MainScene::Update()
 {	
-	//마우스 입력
-	input.UpdateMouse();
-	Input::MouseState state = input.GetMouseState();
-	//obj_Ken.transform.position = Vector2{ state.x, state.y}; //마우스로 위치 설정
-	//obj_Ken.SetAngle(obj_Ken.GetAngle() + 30 * time.GetDeltatime()); //반시계로 1초에 30도씩 회전
-	//obj_Ken.transform.scale += 0.1f * time.GetDeltatime(); //1초에 10% 크기증가
-
 	//애니메이션 업데이트
 	obj_Ken.animation.UpdateFrmae(time.GetDeltatime()); 
 
@@ -59,13 +52,13 @@ void MainScene::Update()
 	if (input.IsKey(KeyCode::RightArrow) && isAniEnd)
 	{
 		obj_Ken.animation.SetClip(Ken_Walk);
-		obj_Ken.transform.position += Vector2::Right * KenMoveSpeed * time.GetDeltatime();
+		obj_Ken.transform.position += obj_Ken.GetDir() * KenMoveSpeed * time.GetDeltatime();
 		obj_Ken.Flip_X = false;
 	}
 	else if (input.IsKey(KeyCode::LeftArrow) && isAniEnd)
 	{
 		obj_Ken.animation.SetClip(Ken_Walk);
-		obj_Ken.transform.position += Vector2::Left * KenMoveSpeed * time.GetDeltatime();
+		obj_Ken.transform.position -= obj_Ken.GetDir() * KenMoveSpeed * time.GetDeltatime();
 		obj_Ken.Flip_X = true;
 	}
 	else
@@ -75,11 +68,13 @@ void MainScene::Update()
 	if (input.IsKey(KeyCode::UpArrow) && isAniEnd)
 	{
 		obj_Ken.animation.SetClip(Ken_Walk);
+
 		obj_Ken.transform.position += Vector2::Up * KenMoveSpeed * time.GetDeltatime();
 	}
 	else if (input.IsKey(KeyCode::DownArrow) && isAniEnd)
 	{
 		obj_Ken.animation.SetClip(Ken_Walk);
+		
 		obj_Ken.transform.position += Vector2::Down * KenMoveSpeed * time.GetDeltatime();
 	}
 	else
