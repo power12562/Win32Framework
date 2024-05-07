@@ -296,7 +296,7 @@ void GameObject_Sprite::UpdateBitMapVertexPoint() //Angle 값에 따른 꼭짓점 위치 
 	GetObject(this->GetHbitmap(), sizeof(bitmap_load), &bitmap_load); //불러온 비트맵의 정보를 담는다
 
 	//현재 클립 상태에 따른 사이즈 조정
-	Animation::Clip* clip = animation.GetCurrClip();
+	Animation::ClipClass* clip = animation.GetCurrClip();
 	CenterPos = Vector2{0,0};
 	if (clip != nullptr)
 	{
@@ -444,7 +444,7 @@ void GameObject_Sprite::DrawBitmap()
 	HBITMAP HBITMAP_temp = CreateCompatibleBitmap(backMemDC, WinApp::GetWinApp().GetClientWidth(), WinApp::GetWinApp().GetClientHeight());	//임시 Hbitmap
 	SelectObject(HDC_temp, HBITMAP_temp);
 
-	Animation::Clip* clip = animation.GetCurrClip();
+	Animation::ClipClass* clip = animation.GetCurrClip();
 	if (clip == nullptr) //애니메이션 클립 활성화 됬는지 확인
 	{
 		BitBlt(HDC_temp, 0, 0, bitmap_load.bmWidth, bitmap_load.bmHeight, HDC_bitmap, 0, 0, SRCCOPY); //원본 그대로 복사.
@@ -494,7 +494,7 @@ void GameObject_Sprite::DrawBitmap_TransparentBlt()
 	HBITMAP HBITMAP_temp = CreateCompatibleBitmap(backMemDC, WinApp::GetWinApp().GetClientWidth(), WinApp::GetWinApp().GetClientHeight());	//임시 Hbitmap
 	SelectObject(HDC_temp, HBITMAP_temp);
 
-	Animation::Clip* clip = animation.GetCurrClip();
+	Animation::ClipClass* clip = animation.GetCurrClip();
 	if (clip == nullptr) //애니메이션 클립 활성화 됬는지 확인
 	{
 		BitBlt(HDC_temp, 0, 0, bitmap_load.bmWidth, bitmap_load.bmHeight, HDC_bitmap, 0, 0, SRCCOPY); //원본 그대로 복사.
@@ -574,7 +574,7 @@ void GameObject_Sprite::DrawBitmap_AlphaBlend()
 	HBITMAP HBITMAP_temp = CreateCompatibleBitmap(backMemDC, WinApp::GetWinApp().GetClientWidth(), WinApp::GetWinApp().GetClientHeight());	//임시 Hbitmap
 	SelectObject(HDC_temp, HBITMAP_temp);
 
-	Animation::Clip* clip = animation.GetCurrClip();
+	Animation::ClipClass* clip = animation.GetCurrClip();
 	if (clip == nullptr) //애니메이션 클립 활성화 됬는지 확인
 	{
 		BitBlt(HDC_temp, 0, 0, bitmap_load.bmWidth, bitmap_load.bmHeight, HDC_bitmap, 0, 0, SRCCOPY); //원본 그대로 복사.
@@ -659,7 +659,7 @@ void GameObject_Sprite::DrawBitmap_AlphaAndTransparent()
 	HBITMAP HBITMAP_temp = CreateCompatibleBitmap(backMemDC, WinApp::GetWinApp().GetClientWidth(), WinApp::GetWinApp().GetClientHeight());	//임시 Hbitmap
 	SelectObject(HDC_temp, HBITMAP_temp);
 
-	Animation::Clip* clip = animation.GetCurrClip();
+	Animation::ClipClass* clip = animation.GetCurrClip();
 	if (clip == nullptr) //애니메이션 클립 활성화 됬는지 확인
 	{
 		BitBlt(HDC_temp, 0, 0, bitmap_load.bmWidth, bitmap_load.bmHeight, HDC_bitmap, 0, 0, SRCCOPY); //원본 그대로 복사.

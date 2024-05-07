@@ -29,7 +29,6 @@ void MainScene::Start()
 	//이미지 반전 여부
 	obj_Ken.Flip_X = false;
 	obj_Ken.Flip_Y = false;
-
 }
 
 //1초에 time.FixedUpdatePerSec 만큼 호출 기본값 : 50
@@ -49,17 +48,23 @@ void MainScene::Update()
 	bool isLeftRight = true;
 	bool isUpDown = true;
 	bool isAniEnd = obj_Ken.animation.IsClipEnd();
+
+	BoundingBox KenBounds = obj_Ken.GetBounds();
 	if (input.IsKey(KeyCode::RightArrow) && isAniEnd)
 	{
 		obj_Ken.animation.SetClip(Ken_Walk);
-		obj_Ken.transform.position += obj_Ken.GetDir() * KenMoveSpeed * time.GetDeltatime();
 		obj_Ken.Flip_X = false;
+
+		if (KenBounds.RightBottom.X <= (float)CLIENT_WIDTH)
+			obj_Ken.transform.position += Vector2::Right * KenMoveSpeed * time.GetDeltatime();
 	}
 	else if (input.IsKey(KeyCode::LeftArrow) && isAniEnd)
 	{
-		obj_Ken.animation.SetClip(Ken_Walk);
-		obj_Ken.transform.position -= obj_Ken.GetDir() * KenMoveSpeed * time.GetDeltatime();
+		obj_Ken.animation.SetClip(Ken_Walk);	
 		obj_Ken.Flip_X = true;
+
+		if (KenBounds.LefTop.X >= 0)
+			obj_Ken.transform.position += Vector2::Left * KenMoveSpeed * time.GetDeltatime();
 	}
 	else
 	{
@@ -70,13 +75,15 @@ void MainScene::Update()
 	{
 		obj_Ken.animation.SetClip(Ken_Walk);
 
-		obj_Ken.transform.position += Vector2::Up * KenMoveSpeed * time.GetDeltatime();
+		if (KenBounds.LefTop.Y <= (float)CLIENT_HEIGHT)
+			obj_Ken.transform.position += Vector2::Up * KenMoveSpeed * time.GetDeltatime();
 	}
 	else if (input.IsKey(KeyCode::DownArrow) && isAniEnd)
 	{
 		obj_Ken.animation.SetClip(Ken_Walk);
 		
-		obj_Ken.transform.position += Vector2::Down * KenMoveSpeed * time.GetDeltatime();
+		if (KenBounds.RightBottom.Y >= 0.f)
+			obj_Ken.transform.position += Vector2::Down * KenMoveSpeed * time.GetDeltatime();
 	}
 	else
 	{

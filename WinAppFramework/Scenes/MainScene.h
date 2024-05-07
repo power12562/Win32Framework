@@ -21,9 +21,8 @@ private:
 	//Field
 	float KenMoveSpeed = 250.f;
 	GameObject_Sprite obj_Ken;
-	Clip Ken_Idle = nullptr;
-	Clip Ken_Walk = nullptr;
-	Clip Ken_Attack = nullptr;
-
+	Animation::Clip Ken_Idle = nullptr;
+	Animation::Clip Ken_Walk = nullptr;
+	Animation::Clip Ken_Attack = nullptr;
 };
 

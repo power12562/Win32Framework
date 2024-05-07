@@ -9,7 +9,7 @@ Animation::Animation()
 
 }
 
-My::List<Animation::Clip>::Node* Animation::AddClip(const WCHAR* fileName, bool IsLoop)
+My::List<Animation::ClipClass>::Node* Animation::AddClip(const WCHAR* fileName, bool IsLoop)
 {
 	using namespace std;
 
@@ -20,9 +20,9 @@ My::List<Animation::Clip>::Node* Animation::AddClip(const WCHAR* fileName, bool 
 		throw;
 	}
 	wstring line;			// 한줄의 문자열	
-	Clip newClip;
-	My::List<Animation::Clip>::Node* pNode = ClipList.PushBack(newClip); //클립 생성
-	Clip& clip = pNode->data;
+	ClipClass newClip;
+	My::List<Animation::ClipClass>::Node* pNode = ClipList.PushBack(newClip); //클립 생성
+	ClipClass& clip = pNode->data;
 	{
 		getline(file, line);		// 첫번째 줄 (프레임 수) 읽기
 		wstringstream wss(line);
@@ -60,7 +60,7 @@ My::List<Animation::Clip>::Node* Animation::AddClip(const WCHAR* fileName, bool 
 }
 
 //재생할 애니메이션 클립 설정
-void Animation::SetClip(My::List<Animation::Clip>::Node* clip)
+void Animation::SetClip(My::List<Animation::ClipClass>::Node* clip)
 {
 	if (CurrentClip != &(clip->data) && isCurrentClipEnd)
 	{
@@ -71,7 +71,7 @@ void Animation::SetClip(My::List<Animation::Clip>::Node* clip)
 }
 
 //애니메이션 클립 삭제
-void Animation::DelClip(My::List<Animation::Clip>::Node* clip)
+void Animation::DelClip(My::List<Animation::ClipClass>::Node* clip)
 {
 	if (CurrentClip == &(clip->data))
 	{
