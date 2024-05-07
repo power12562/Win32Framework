@@ -154,6 +154,8 @@ namespace My
 	}
 	template<typename T> void List<T>::Clear()
 	{
+		if (pHead == nullptr) return;
+
 		Node* pCurrent = pHead->Next;
 		for (int i = 1; i < this->size; i++)
 		{
