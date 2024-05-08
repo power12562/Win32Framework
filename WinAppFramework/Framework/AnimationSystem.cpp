@@ -95,7 +95,13 @@ void Animation::UpdateFrmae(float DeltaTime)
 	if (CurrentFrame == CurrentClip->FrameCount)
 	{
 		if (CurrentClip->IsLoop == true)
-			CurrentFrame = 0; //루프
+		{
+			if (elapsedTime >= CurrentClip->frameIntervalTime)
+			{
+				CurrentFrame = 0; //루프
+				elapsedTime = 0;
+			}		
+		}		
 		else
 		{
 			CurrentFrame--;
