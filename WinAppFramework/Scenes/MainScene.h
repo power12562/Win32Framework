@@ -20,9 +20,9 @@ private:
 
 	//Field
 	float KenMoveSpeed = 250.f;
-	GameObject_Sprite obj_Ken;
-	Animation::Clip Ken_Idle = nullptr;
-	Animation::Clip Ken_Walk = nullptr;
-	Animation::Clip Ken_Attack = nullptr;
+	GameObject_Sprite mario;
+	Animation::Clip mario_Idle = nullptr;
+	Animation::Clip mario_Walk = nullptr;
+	Animation::Clip mario_Run = nullptr;
 };
 
