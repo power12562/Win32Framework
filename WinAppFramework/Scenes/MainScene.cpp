@@ -12,7 +12,7 @@ void MainScene::Start()
 	mario.Loadbmp("Resource\\mario\\mario.bmp"); //리소스 로드
 	//obj_Ken.SetAlpha(0.5f); //투명도
 	mario.SetTrColor(RGB(153,217,234)); //배경색 제거
-	mario.transform.scale = 3.f;
+	mario.transform.scale = { 5.f, 5.f };
 
 	//애니메이션
 	mario_Idle = mario.animation.AddClip(L"Resource\\mario\\Idle.txt");
@@ -93,7 +93,7 @@ void MainScene::Update()
 #ifdef _DEBUG
 	//printf("mw_X : %d     mw_Y : %d\n", state.x, state.y); //마우스 좌표 확인용
 	Vector2 dir = mario.GetDir(); //오브젝트 방향 확인용
-	printf("{ %.02f , %.02f  }\n", dir.X, dir.Y);
+	//printf("{ %.02f , %.02f  }\n", dir.X, dir.Y);
 #endif // _DEBUG
 }
 

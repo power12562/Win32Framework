@@ -13,7 +13,7 @@ class GameObjectBase
 	};
 public:
 
-	GameObjectBase() = default;
+	GameObjectBase() { transform = { {0, 0}, {1, 1} }; }
 	virtual ~GameObjectBase() = default;
 
 	Transform transform;
