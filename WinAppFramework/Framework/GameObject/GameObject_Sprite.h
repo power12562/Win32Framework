@@ -85,9 +85,8 @@ public:
 		Alpha = 0b0010,
 		Transparent = 0b0001
 	};
-
 	GameObject_Sprite();
-	~GameObject_Sprite();
+	virtual ~GameObject_Sprite();
 	GameObject_Sprite& operator=(const GameObject_Sprite&);
 
 	Animation_Sprite animation;

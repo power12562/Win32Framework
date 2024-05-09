@@ -5,7 +5,7 @@ class GameObject_Font : public GameObjectBase, public Render
 {
 public:
 	GameObject_Font();
-	~GameObject_Font();
+	virtual ~GameObject_Font();
 
 	virtual void Rendering() override;
 

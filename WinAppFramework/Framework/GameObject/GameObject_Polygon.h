@@ -5,7 +5,7 @@ class GameObject_Polygon : public GameObjectBase, public Render
 {
 public:
 	GameObject_Polygon();
-	~GameObject_Polygon();
+	virtual ~GameObject_Polygon();
 
 	virtual void Rendering() override;
 	void SetOriginToPoints(POINT points[], int vertextCount);

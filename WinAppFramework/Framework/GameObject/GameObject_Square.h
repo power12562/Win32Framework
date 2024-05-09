@@ -5,7 +5,7 @@ class GameObject_Square : public GameObjectBase, public Render
 {
 public:
 	GameObject_Square();
-	~GameObject_Square();
+	virtual ~GameObject_Square();
 
 	virtual void Rendering() override;
 

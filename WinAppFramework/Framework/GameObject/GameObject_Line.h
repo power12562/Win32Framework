@@ -5,7 +5,7 @@ class GameObject_Line : public GameObjectBase, public Render
 {
 public:
 	GameObject_Line();
-	~GameObject_Line();
+	virtual ~GameObject_Line();
 
 	virtual void Rendering() override;
 	void SetOriginToStartVertex(Vector2 position);

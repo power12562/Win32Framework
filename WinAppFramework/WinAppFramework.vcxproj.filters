@@ -90,6 +90,9 @@
     <ClInclude Include="Framework\GameObject\GameObject_text.h">
       <Filter>Framework\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\GameObjectBase.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\GameObject\GameObject_Sprite.cpp">

@@ -27,6 +27,7 @@
     <ClInclude Include="Framework\DataType\myStack.h" />
     <ClInclude Include="Framework\DataType\Vector2.h" />
     <ClInclude Include="Framework\DataType\wString.h" />
+    <ClInclude Include="Framework\GameObjectBase.h" />
     <ClInclude Include="Framework\GameObject\GameObject_Circle.h" />
     <ClInclude Include="Framework\GameObject\GameObject_Font.h" />
     <ClInclude Include="Framework\GameObject\GameObject_Line.h" />

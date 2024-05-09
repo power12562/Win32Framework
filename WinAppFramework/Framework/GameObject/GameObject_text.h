@@ -5,7 +5,7 @@ class GameObject_Text : public GameObjectBase, public Render
 {
 public:
 	GameObject_Text();
-	~GameObject_Text();
+	virtual ~GameObject_Text();
 
 	virtual void Rendering() override;
 

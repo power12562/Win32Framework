@@ -5,9 +5,10 @@ class GameObject_Circle : public GameObjectBase, public Render
 {
 public:
 	GameObject_Circle();
-	~GameObject_Circle();
+	virtual ~GameObject_Circle();
 
-	void Rendering();
+	virtual void Rendering() override;
+
 	void SetRadious(int radius);
 	void SetColor(COLORREF RGB);
 

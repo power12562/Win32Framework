@@ -1,8 +1,8 @@
 #pragma once
-#include "..\RenderSystem.h"
-#include "..\AnimationSystem.h"
-#include "..\DataType\Vector2.h"
-#include "..\DataType\wString.h"
+#include "RenderSystem.h"
+#include "AnimationSystem.h"
+#include "DataType\Vector2.h"
+#include "DataType\wString.h"
 
 class GameObjectBase
 {
@@ -14,10 +14,9 @@ class GameObjectBase
 public:
 
 	GameObjectBase() = default;
-	~GameObjectBase() = default;
+	virtual ~GameObjectBase() = default;
 
 	Transform transform;
-
 private:
 
 };
