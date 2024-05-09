@@ -27,6 +27,13 @@
     <ClInclude Include="Framework\DataType\myStack.h" />
     <ClInclude Include="Framework\DataType\Vector2.h" />
     <ClInclude Include="Framework\DataType\wString.h" />
+    <ClInclude Include="Framework\GameObject\GameObject_Circle.h" />
+    <ClInclude Include="Framework\GameObject\GameObject_Font.h" />
+    <ClInclude Include="Framework\GameObject\GameObject_Line.h" />
+    <ClInclude Include="Framework\GameObject\GameObject_Polygon.h" />
+    <ClInclude Include="Framework\GameObject\GameObject_Sprite.h" />
+    <ClInclude Include="Framework\GameObject\GameObject_Square.h" />
+    <ClInclude Include="Framework\GameObject\GameObject_text.h" />
     <ClInclude Include="Framework\SceneManager.h" />
     <ClInclude Include="Framework\GameObject\GameObject.h" />
     <ClInclude Include="Framework\InputSystem.h" />

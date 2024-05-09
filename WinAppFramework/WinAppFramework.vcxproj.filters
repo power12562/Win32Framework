@@ -69,6 +69,27 @@
     <ClInclude Include="Framework\AnimationSystem.h">
       <Filter>Framework</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\GameObject\GameObject_Circle.h">
+      <Filter>Framework\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\GameObject\GameObject_Font.h">
+      <Filter>Framework\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\GameObject\GameObject_Line.h">
+      <Filter>Framework\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\GameObject\GameObject_Polygon.h">
+      <Filter>Framework\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\GameObject\GameObject_Sprite.h">
+      <Filter>Framework\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\GameObject\GameObject_Square.h">
+      <Filter>Framework\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\GameObject\GameObject_text.h">
+      <Filter>Framework\GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\GameObject\GameObject_Sprite.cpp">
